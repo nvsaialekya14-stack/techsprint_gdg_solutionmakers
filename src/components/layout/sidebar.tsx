@@ -25,6 +25,7 @@ import {
   FileText,
   Book,
   ChevronLeft,
+  FileSearch,
 } from 'lucide-react'
 
 const menuItems = [
@@ -33,6 +34,7 @@ const menuItems = [
   { href: '/books', label: 'Books', icon: BookCopy },
   { href: '/reservations', label: 'Reservations', icon: CalendarCheck },
   { href: '/scan-search', label: 'Scan & Search', icon: ScanLine },
+  { href: '/syllabus-search', label: 'Syllabus Search', icon: FileSearch },
   { href: '/writings', label: 'Writings', icon: PenSquare },
   { href: '/feedback', label: 'Feedback', icon: MessageSquare },
   { href: '/reports', label: 'Reports', icon: FileText },
