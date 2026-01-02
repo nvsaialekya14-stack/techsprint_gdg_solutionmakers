@@ -3,7 +3,7 @@
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Legend, Tooltip } from 'recharts'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { ChartTooltipContent } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart'
 
 const monthlyData = [
   { month: 'Jan', checkouts: 186, reservations: 80 },
@@ -15,12 +15,49 @@ const monthlyData = [
 ]
 
 const categoryData = [
-  { name: 'Fiction', value: 450, fill: 'hsl(var(--chart-1))' },
-  { name: 'Non-Fiction', value: 320, fill: 'hsl(var(--chart-2))' },
-  { name: 'Sci-Fi', value: 280, fill: 'hsl(var(--chart-3))' },
-  { name: 'Biography', value: 200, fill: 'hsl(var(--chart-4))' },
-  { name: 'History', value: 150, fill: 'hsl(var(--chart-5))' },
+    { name: 'Fiction', value: 450, fill: "var(--color-fiction)" },
+    { name: 'Non-Fiction', value: 320, fill: "var(--color-non-fiction)" },
+    { name: 'Sci-Fi', value: 280, fill: "var(--color-sci-fi)" },
+    { name: 'Biography', value: 200, fill: "var(--color-biography)" },
+    { name: 'History', value: 150, fill: "var(--color-history)" },
 ]
+
+const monthlyChartConfig = {
+  checkouts: {
+    label: 'Checkouts',
+    color: 'hsl(var(--primary))',
+  },
+  reservations: {
+    label: 'Reservations',
+    color: 'hsl(var(--accent))',
+  },
+} satisfies ChartConfig
+
+const categoryChartConfig = {
+  fiction: {
+    label: "Fiction",
+    color: "hsl(var(--chart-1))",
+  },
+  "non-fiction": {
+    label: "Non-Fiction",
+    color: "hsl(var(--chart-2))",
+  },
+  "sci-fi": {
+    label: "Sci-Fi",
+    color: "hsl(var(--chart-3))",
+  },
+  biography: {
+    label: "Biography",
+    color: "hsl(var(--chart-4))",
+  },
+  history: {
+    label: "History",
+    color: "hsl(var(--chart-5))",
+  },
+  value: {
+    label: "Total",
+  }
+} satisfies ChartConfig
 
 export default function ReportsPage() {
   return (
@@ -38,8 +75,8 @@ export default function ReportsPage() {
             <CardTitle>Monthly Activity</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={monthlyData}>
+            <ChartContainer config={monthlyChartConfig} className="min-h-[200px] w-full">
+              <BarChart accessibilityLayer data={monthlyData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="month" tickLine={false} axisLine={false} />
                 <YAxis tickLine={false} axisLine={false} />
@@ -48,10 +85,10 @@ export default function ReportsPage() {
                   content={<ChartTooltipContent indicator="dot" />}
                 />
                 <Legend />
-                <Bar dataKey="checkouts" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="reservations" fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="checkouts" fill="var(--color-checkouts)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="reservations" fill="var(--color-reservations)" radius={[4, 4, 0, 0]} />
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
         
@@ -60,8 +97,8 @@ export default function ReportsPage() {
             <CardTitle>Popular Categories</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={categoryData} layout="vertical">
+            <ChartContainer config={categoryChartConfig} className="min-h-[200px] w-full">
+              <BarChart accessibilityLayer data={categoryData} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} />
                 <XAxis type="number" hide />
                 <YAxis dataKey="name" type="category" tickLine={false} axisLine={false} />
@@ -71,7 +108,7 @@ export default function ReportsPage() {
                 />
                 <Bar dataKey="value" radius={[0, 4, 4, 0]} />
               </BarChart>
-            </ResponsiveContainer>
+            </ChartContainer>
           </CardContent>
         </Card>
       </div>
