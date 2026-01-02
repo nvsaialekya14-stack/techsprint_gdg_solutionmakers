@@ -13,11 +13,19 @@ import { Loader2, AlertTriangle, Search } from 'lucide-react'
 import { PlaceHolderImages } from '@/lib/placeholder-images'
 import BookRecommendations from '@/components/book-recommendations'
 
+type BookRecommendation = {
+    bookId: string;
+    title: string;
+    author: string;
+    category: string;
+    relevanceScore: number;
+}
+
 export default function BookSearchPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [recommendations, setRecommendations] = useState<SyllabusImageBookRecommendationOutput | null>(null)
+  const [recommendations, setRecommendations] = useState<BookRecommendation[] | null>(null)
 
   const handleSearch = async () => {
     if (!searchTerm) {
@@ -31,8 +39,7 @@ export default function BookSearchPage() {
 
     // This is a mock search.
     setTimeout(() => {
-      const mockData: SyllabusImageBookRecommendationOutput = {
-        bookRecommendations: [
+      const mockData: BookRecommendation[] = [
           {
             bookId: '1',
             title: 'The Great Gatsby',
@@ -54,8 +61,7 @@ export default function BookSearchPage() {
             category: 'Dystopian Fiction',
             relevanceScore: 98,
           },
-        ],
-      }
+        ]
       setRecommendations(mockData)
       setLoading(false)
     }, 1500)
@@ -117,7 +123,7 @@ export default function BookSearchPage() {
       )}
 
       {recommendations && (
-        <BookRecommendations recommendations={recommendations} />
+        <BookRecommendations recommendations={{ bookRecommendations: recommendations }} />
       )}
     </div>
   )

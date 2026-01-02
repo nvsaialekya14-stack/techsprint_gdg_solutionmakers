@@ -39,7 +39,7 @@ export default function BookRecommendations({ recommendations }: BookRecommendat
                 />
               </CardHeader>
               <CardContent className="flex-grow p-4">
-                <CardTitle className="font-headline text-lg mb-1">{book.title}</CardTitle>
+                <CardTitle as="h3" className="font-headline text-lg mb-1">{book.title}</CardTitle>
                 <p className="text-sm text-muted-foreground">{book.author}</p>
                 <p className="text-xs text-muted-foreground mt-2 bg-secondary inline-block px-2 py-1 rounded-full">{book.category}</p>
               </CardContent>
