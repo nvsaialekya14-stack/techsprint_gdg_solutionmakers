@@ -6,13 +6,13 @@ import { getBookRecommendations } from './actions'
 
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Loader2, UploadCloud, AlertTriangle } from 'lucide-react'
-import { PlaceHolderImages } from '@/lib/placeholder-images'
+import BookRecommendations from '@/components/book-recommendations'
+import { CardHeader, CardFooter } from '@/components/ui/card'
 
 export default function SyllabusRecommendationPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -140,47 +140,7 @@ export default function SyllabusRecommendationPage() {
         </Alert>
       )}
 
-      {recommendations && recommendations.bookRecommendations.length > 0 && (
-        <div className="mt-12">
-          <h2 className="font-headline text-3xl font-bold text-center mb-8">Recommended Books</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recommendations.bookRecommendations.map((book, index) => {
-              const placeholder = PlaceHolderImages[index % PlaceHolderImages.length];
-              return (
-              <Card key={book.bookId} className="flex flex-col overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-xl">
-                <CardHeader className="p-0">
-                  <Image
-                    src={placeholder?.imageUrl ?? `https://picsum.photos/seed/${book.bookId}/400/300`}
-                    alt={book.title}
-                    width={400}
-                    height={300}
-                    className="object-cover w-full h-48"
-                    data-ai-hint={placeholder?.imageHint ?? 'book cover'}
-                  />
-                </CardHeader>
-                <CardContent className="flex-grow p-4">
-                  <CardTitle className="font-headline text-lg mb-1">{book.title}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{book.author}</p>
-                  <p className="text-xs text-muted-foreground mt-2 bg-secondary inline-block px-2 py-1 rounded-full">{book.category}</p>
-                </CardContent>
-                <CardFooter className="p-4 pt-0">
-                  <div className="w-full">
-                    <p className="text-xs text-muted-foreground mb-1">Relevance</p>
-                    <Progress value={book.relevanceScore} aria-label={`${book.relevanceScore}% relevant`} />
-                  </div>
-                </CardFooter>
-              </Card>
-            )})}
-          </div>
-        </div>
-      )}
-
-      {recommendations && recommendations.bookRecommendations.length === 0 && (
-        <div className="mt-12 text-center">
-            <h2 className="font-headline text-2xl font-bold">No Recommendations Found</h2>
-            <p className="text-muted-foreground mt-2">We couldn't find any relevant books for the uploaded syllabus. Please try another one.</p>
-        </div>
-      )}
+      {recommendations && <BookRecommendations recommendations={recommendations} />}
     </div>
   )
 }
