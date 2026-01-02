@@ -8,6 +8,7 @@ import {
   ArrowRight,
   BookCheck,
   BookPlus,
+  BookX,
   CalendarClock,
 } from 'lucide-react'
 import {
@@ -36,9 +37,9 @@ const summaryStats = [
     icon: CalendarClock,
   },
   {
-    title: 'Recent Activity',
-    value: '5 new books',
-    icon: Activity,
+    title: 'Books Overdue',
+    value: '2',
+    icon: BookX,
   },
 ]
 
