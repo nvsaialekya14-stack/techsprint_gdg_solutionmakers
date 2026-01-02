@@ -1,3 +1,34 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "1",
+      "description": "Abstract cover for a science fiction novel.",
+      "imageUrl": "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzY2llbmNlJTIwZmljdGlvbnxlbnwwfHx8fDE3NjcyNzEwMDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "science fiction"
+    },
+    {
+      "id": "2",
+      "description": "A classic design for a history book.",
+      "imageUrl": "https://images.unsplash.com/photo-1632038585992-fecf8a0cf59d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxoaXN0b3J5JTIwYm9va3xlbnwwfHx8fDE3NjczNjIyMTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "history book"
+    },
+    {
+      "id": "3",
+      "description": "Colorful artwork for a fantasy book.",
+      "imageUrl": "https://images.unsplash.com/photo-1741118235609-bf637a4e7d39?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmYW50YXN5JTIwYXJ0fGVufDB8fHx8MTc2NzM2MjIxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fantasy art"
+    },
+    {
+      "id": "4",
+      "description": "Minimalist cover for a programming textbook.",
+      "imageUrl": "https://images.unsplash.com/photo-1732304720116-4195b021d8d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cHJvZ3JhbW1pbmclMjB0ZXh0Ym9va3xlbnwwfHx8fDE3NjczNjIyMTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "programming textbook"
+    },
+    {
+      "id": "5",
+      "description": "Elegant design for a poetry collection.",
+      "imageUrl": "https://images.unsplash.com/photo-1576238580501-f21ccaaa83ac?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb2V0cnklMjBjb2xsZWN0aW9ufGVufDB8fHx8MTc2NzM2MjIxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "poetry collection"
+    }
+  ]
 }
