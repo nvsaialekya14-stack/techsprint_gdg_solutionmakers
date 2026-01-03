@@ -36,11 +36,13 @@ export default function ScanSearchPage() {
       } catch (error) {
         console.error('Error accessing camera:', error)
         setHasCameraPermission(false)
-        toast({
-          variant: 'destructive',
-          title: 'Camera Access Denied',
-          description: 'Please enable camera permissions in your browser settings to use this feature.',
-        })
+        if (error instanceof DOMException && error.name === 'NotAllowedError') {
+            toast({
+              variant: 'destructive',
+              title: 'Camera Access Denied',
+              description: 'Please enable camera permissions in your browser settings to use this feature.',
+            })
+        }
       }
     }
     getCameraPermission()
@@ -72,19 +74,21 @@ export default function ScanSearchPage() {
       <Card className="max-w-2xl mx-auto shadow-lg">
         <CardContent className="p-6">
           <div className="relative aspect-video bg-muted rounded-md overflow-hidden flex items-center justify-center">
-            <video ref={videoRef} className="w-full h-full object-cover" autoPlay muted playsInline />
-            {isScanning && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-3/4 h-1/2 border-4 border-primary rounded-lg animate-pulse" />
-              </div>
-            )}
-            {hasCameraPermission === false && (
-              <div className="absolute inset-0 bg-background/80 flex flex-col items-center justify-center text-center p-4">
+            {hasCameraPermission ? (
+              <video ref={videoRef} className="w-full h-full object-cover" autoPlay muted playsInline />
+            ) : (
+               <div className="absolute inset-0 bg-background/80 flex flex-col items-center justify-center text-center p-4">
                 <AlertTriangle className="h-10 w-10 text-destructive mb-2" />
                 <h3 className="font-bold">Camera Access Required</h3>
                 <p className="text-sm text-muted-foreground">Please allow camera access in your browser to use the scanner.</p>
               </div>
             )}
+            {isScanning && hasCameraPermission && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-3/4 h-1/2 border-4 border-primary rounded-lg animate-pulse" />
+              </div>
+            )}
+            
           </div>
           <Button onClick={handleScanClick} className="w-full mt-4" disabled={hasCameraPermission !== true}>
             <Camera className="mr-2" />
