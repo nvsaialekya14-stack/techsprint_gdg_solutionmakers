@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState } from 'react'
@@ -20,7 +19,7 @@ export default function SyllabusRecommendationPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // 🔹 IMPORTANT: state does NOT allow undefined
+  // ✅ State allows null, NOT undefined
   const [recommendations, setRecommendations] =
     useState<SyllabusImageBookRecommendationOutput | null>(null)
 
@@ -64,7 +63,7 @@ export default function SyllabusRecommendationPage() {
           if (result.error) {
             setError(result.error)
           } else {
-            // ✅ FIX: never pass undefined to state
+            // ✅ CRITICAL FIX
             setRecommendations(result.data ?? null)
           }
         } catch (err) {
@@ -86,3 +85,116 @@ export default function SyllabusRecommendationPage() {
       reader.readAsDataURL(file)
     } catch (err) {
       setError(
+        err instanceof Error
+          ? err.message
+          : 'An unexpected error occurred.'
+      )
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="container mx-auto p-4 md:p-6 lg:p-8">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+          Syllabus AI Recommendations
+        </h1>
+        <p className="mt-4 text-lg text-muted-foreground">
+          Upload an image of your syllabus, and our AI will recommend the most
+          relevant books from our library.
+        </p>
+      </div>
+
+      <Card className="max-w-2xl mx-auto">
+        <CardContent className="p-6">
+          <form onSubmit={handleSubmit}>
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="syllabus-image">Upload Syllabus</Label>
+
+                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-input px-6 py-10">
+                  <div className="text-center">
+                    {preview ? (
+                      <Image
+                        src={preview}
+                        alt="Syllabus preview"
+                        width={200}
+                        height={200}
+                        className="mx-auto h-32 w-auto object-contain"
+                      />
+                    ) : (
+                      <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
+                    )}
+
+                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                      <Label
+                        htmlFor="syllabus-image"
+                        className="relative cursor-pointer rounded-md font-semibold text-primary hover:text-primary/80"
+                      >
+                        <span>Upload a file</span>
+                        <Input
+                          id="syllabus-image"
+                          type="file"
+                          className="sr-only"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                        />
+                      </Label>
+                      <p className="pl-1">or drag and drop</p>
+                    </div>
+
+                    <p className="text-xs leading-5 text-gray-600">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <Button type="submit" disabled={loading || !file}>
+                {loading && (
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                {loading ? 'Analyzing...' : 'Get Recommendations'}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+
+      {loading && (
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(3)].map((_, i) => (
+            <Card key={i} className="animate-pulse">
+              <CardHeader>
+                <div className="w-full h-48 bg-muted rounded-md" />
+              </CardHeader>
+              <CardContent>
+                <div className="h-6 w-3/4 bg-muted rounded" />
+                <div className="h-4 w-1/2 bg-muted rounded mt-2" />
+              </CardContent>
+              <CardFooter>
+                <div className="h-4 w-full bg-muted rounded" />
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <Alert variant="destructive" className="mt-12 max-w-2xl mx-auto">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      {recommendations && (
+        <BookRecommendations recommendations={recommendations} />
+      )}
+    </div>
+  )
+}
+
+
+
+       
