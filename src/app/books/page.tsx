@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useState } from 'react'
@@ -68,13 +69,13 @@ export default function BookSearchPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-5xl">
-      <section className="text-center mb-12">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-primary">Search for Books</h1>
+    <div className="container mx-auto p-4 md:p-6 lg:p-8">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">Search for Books</h1>
         <p className="mt-4 text-lg text-muted-foreground">
           Find any book in our library by title, author, or category.
         </p>
-      </section>
+      </div>
 
       <div className="max-w-2xl mx-auto">
         <div className="flex w-full items-center space-x-2">

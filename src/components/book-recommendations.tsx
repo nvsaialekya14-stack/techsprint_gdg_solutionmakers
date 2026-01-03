@@ -14,15 +14,15 @@ export default function BookRecommendations({ recommendations }: BookRecommendat
   if (recommendations.bookRecommendations.length === 0) {
     return (
       <div className="mt-12 text-center">
-        <h2 className="font-headline text-2xl font-bold">No Recommendations Found</h2>
-        <p className="text-muted-foreground mt-2">We couldn't find any relevant books. Please try a different search or syllabus.</p>
+        <h2 className="text-2xl font-bold">No Recommendations Found</h2>
+        <p className="text-muted-foreground mt-2">We couldn't find any relevant books. Please try a different syllabus.</p>
       </div>
     )
   }
 
   return (
     <div className="mt-12">
-      <h2 className="font-headline text-3xl font-bold text-center mb-8">Recommended Books</h2>
+      <h2 className="text-3xl font-bold text-center mb-8">Recommended Books</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {recommendations.bookRecommendations.map((book, index) => {
           const placeholder = PlaceHolderImages[index % PlaceHolderImages.length]
@@ -39,7 +39,7 @@ export default function BookRecommendations({ recommendations }: BookRecommendat
                 />
               </CardHeader>
               <CardContent className="flex-grow p-4">
-                <CardTitle as="h3" className="font-headline text-lg mb-1">{book.title}</CardTitle>
+                <CardTitle as="h3" className="text-lg mb-1">{book.title}</CardTitle>
                 <p className="text-sm text-muted-foreground">{book.author}</p>
                 <p className="text-xs text-muted-foreground mt-2 bg-secondary inline-block px-2 py-1 rounded-full">{book.category}</p>
               </CardContent>
