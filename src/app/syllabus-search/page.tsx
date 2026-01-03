@@ -71,35 +71,38 @@ export default function SyllabusRecommendationPage() {
   }
 
   return (
-    <div className="container mx-auto max-w-5xl">
-      <section className="text-center mb-12">
-        <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-primary">Syllabus AI Recommendations</h1>
+    <div className="container mx-auto p-4 md:p-6 lg:p-8">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">Syllabus AI Recommendations</h1>
         <p className="mt-4 text-lg text-muted-foreground">
           Upload an image of your syllabus, and our AI will recommend the most relevant books from our library.
         </p>
-      </section>
+      </div>
 
-      <Card className="max-w-2xl mx-auto shadow-lg">
+      <Card className="max-w-2xl mx-auto">
         <CardContent className="p-6">
           <form onSubmit={handleSubmit}>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="syllabus-image" className="text-base">Upload Syllabus</Label>
+                <Label htmlFor="syllabus-image">Upload Syllabus</Label>
                 <div className="mt-2 flex justify-center rounded-lg border border-dashed border-input px-6 py-10">
                   <div className="text-center">
                     {preview ? (
-                       <Image src={preview} alt="Syllabus preview" width={200} height={200} className="mx-auto h-32 w-auto object-contain rounded-md" />
+                       <Image src={preview} alt="Syllabus preview" width={200} height={200} className="mx-auto h-32 w-auto object-contain" />
                     ) : (
-                      <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground" aria-hidden="true" />
+                      <UploadCloud className="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
                     )}
-                    <div className="mt-4 flex text-sm leading-6 text-muted-foreground">
-                      <Label htmlFor="syllabus-image" className="relative cursor-pointer rounded-md font-semibold text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 hover:text-primary/80">
+                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                      <Label
+                        htmlFor="syllabus-image"
+                        className="relative cursor-pointer rounded-md font-semibold text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 hover:text-primary/80"
+                      >
                         <span>Upload a file</span>
                         <Input id="syllabus-image" name="syllabus-image" type="file" className="sr-only" onChange={handleFileChange} accept="image/*" />
                       </Label>
                       <p className="pl-1">or drag and drop</p>
                     </div>
-                    <p className="text-xs leading-5 text-muted-foreground">PNG, JPG, GIF up to 10MB</p>
+                    <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
                   </div>
                 </div>
               </div>

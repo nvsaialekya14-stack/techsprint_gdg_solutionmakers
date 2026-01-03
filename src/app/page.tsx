@@ -1,150 +1,158 @@
 
 'use client'
 
-import { useState } from 'react'
-import type { SyllabusImageBookRecommendationOutput } from '@/ai/flows/syllabus-image-book-recommendation'
-import { getBookRecommendations } from '@/app/actions'
-
 import Image from 'next/image'
+import Link from 'next/link'
+import {
+  AlertTriangle,
+  ArrowRight,
+  BookCopy,
+  CalendarCheck,
+} from 'lucide-react'
+
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Loader2, UploadCloud, AlertTriangle } from 'lucide-react'
-import BookRecommendations from '@/components/book-recommendations'
-import { CardHeader, CardFooter } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { PlaceHolderImages } from '@/lib/placeholder-images'
+import Balancer from 'react-wrap-balancer'
 
-export default function SyllabusRecommendationPage() {
-  const [file, setFile] = useState<File | null>(null)
-  const [preview, setPreview] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [recommendations, setRecommendations] = useState<SyllabusImageBookRecommendationOutput | null>(null)
+const summaryStats = [
+  {
+    title: 'Total Books',
+    value: '1,250',
+    icon: BookCopy,
+  },
+  {
+    title: 'Reservations',
+    value: '3',
+    icon: CalendarCheck,
+  },
+  {
+    title: 'Overdue',
+    value: '1',
+    icon: AlertTriangle,
+    className: 'text-destructive',
+  },
+]
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0]
-    if (selectedFile) {
-      setFile(selectedFile)
-      setError(null)
-      setRecommendations(null)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreview(reader.result as string)
-      }
-      reader.readAsDataURL(selectedFile)
-    }
-  }
+const popularBooks = [
+  {
+    bookId: 'pop1',
+    title: 'The Midnight Library',
+    author: 'Matt Haig',
+    reason: 'Top Checkouts This Month',
+    badgeText: 'Popular',
+    badgeVariant: 'default',
+  },
+  {
+    bookId: 'pop2',
+    title: 'Project Hail Mary',
+    author: 'Andy Weir',
+    reason: 'Highest Rated by Readers',
+    badgeText: 'Popular',
+    badgeVariant: 'default',
+  },
+  {
+    bookId: 'pop3',
+    title: 'Klara and the Sun',
+    author: 'Kazuo Ishiguro',
+    reason: 'Most Reserved This Week',
+    badgeText: 'Popular',
+    badgeVariant: 'default',
+  },
+]
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (!file) {
-      setError('Please select a syllabus image to upload.')
-      return
-    }
-
-    setLoading(true)
-    setError(null)
-    setRecommendations(null)
-
-    try {
-      const reader = new FileReader()
-      reader.readAsDataURL(file)
-      reader.onload = async () => {
-        const base64Data = reader.result as string
-        const result = await getBookRecommendations({ syllabusImageDataUri: base64Data })
-        if (result.error) {
-          setError(result.error)
-        } else {
-          setRecommendations(result.data)
-        }
-        setLoading(false)
-      }
-      reader.onerror = () => {
-        setError('Failed to read the file.')
-        setLoading(false)
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred.')
-      setLoading(false)
-    }
-  }
-
+export default function DashboardPage() {
   return (
-    <div className="container mx-auto p-4 md:p-6 lg:p-8">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">Syllabus AI Recommendations</h1>
+    <div className="container mx-auto max-w-5xl">
+      <section className="mb-12">
+        <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight text-primary">
+          <Balancer>Welcome to LibWise</Balancer>
+        </h1>
         <p className="mt-4 text-lg text-muted-foreground">
-          Upload an image of your syllabus, and our AI will recommend the most relevant books from our library.
+          <Balancer>Your library at a glance. Manage reservations, discover new books, and more.</Balancer>
         </p>
+      </section>
+
+      {/* Summary Cards */}
+      <div className="mb-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {summaryStats.map((stat) => (
+          <Card key={stat.title}>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle as="h3" className="text-sm font-medium">
+                {stat.title}
+              </CardTitle>
+              <stat.icon
+                className={`h-4 w-4 text-muted-foreground ${stat.className ?? ''}`}
+              />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stat.value}</div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      <Card className="max-w-2xl mx-auto">
-        <CardContent className="p-6">
-          <form onSubmit={handleSubmit}>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="syllabus-image">Upload Syllabus</Label>
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-input px-6 py-10">
-                  <div className="text-center">
-                    {preview ? (
-                       <Image src={preview} alt="Syllabus preview" width={200} height={200} className="mx-auto h-32 w-auto object-contain" />
-                    ) : (
-                      <UploadCloud className="mx-auto h-12 w-12 text-gray-400" aria-hidden="true" />
-                    )}
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                      <Label
-                        htmlFor="syllabus-image"
-                        className="relative cursor-pointer rounded-md font-semibold text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 hover:text-primary/80"
-                      >
-                        <span>Upload a file</span>
-                        <Input id="syllabus-image" name="syllabus-image" type="file" className="sr-only" onChange={handleFileChange} accept="image/*" />
-                      </Label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                    <p className="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
-                  </div>
-                </div>
-              </div>
-              <Button type="submit" disabled={loading || !file} className="w-full">
-                {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                {loading ? 'Analyzing...' : 'Get Recommendations'}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-      
-      {loading && (
-        <div className="mt-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[...Array(3)].map((_, i) => (
-              <Card key={i} className="animate-pulse">
-                <CardHeader>
-                  <div className="w-full h-48 bg-muted rounded-md"></div>
+      {/* Popular Books Section */}
+      <div className="mb-12">
+        <div className="flex items-center justify-between mb-6">
+            <h2 className="font-headline text-3xl font-bold">Popular Books</h2>
+            <Button variant="link" asChild>
+                <Link href="/popular">
+                    View All
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+            </Button>
+        </div>
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {popularBooks.map((book, index) => {
+            const placeholder = PlaceHolderImages[index % PlaceHolderImages.length]
+            return (
+              <Card
+                key={book.bookId}
+                className="flex flex-col transition-shadow hover:shadow-xl"
+              >
+                <CardHeader className="relative p-0">
+                  <Badge
+                    className="absolute right-2 top-2 z-10"
+                    variant={book.badgeVariant as 'default' | 'destructive'}
+                  >
+                    {book.badgeText}
+                  </Badge>
+                  <Image
+                    src={
+                      placeholder?.imageUrl ??
+                      `https://picsum.photos/seed/${book.bookId}/400/300`
+                    }
+                    alt={book.title}
+                    width={400}
+                    height={300}
+                    className="h-48 w-full rounded-t-lg object-cover"
+                    data-ai-hint={placeholder?.imageHint ?? 'book cover'}
+                  />
                 </CardHeader>
-                <CardContent>
-                  <div className="h-6 w-3/4 bg-muted rounded"></div>
-                  <div className="h-4 w-1/2 bg-muted rounded mt-2"></div>
+                <CardContent className="flex-grow p-4">
+                  <CardTitle as="h3" className="mb-1 font-headline text-lg">
+                    {book.title}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground">{book.author}</p>
                 </CardContent>
-                <CardFooter>
-                   <div className="h-4 w-full bg-muted rounded"></div>
+                <CardFooter className="p-4 pt-0">
+                  <p className="text-xs font-semibold text-primary">
+                    {book.reason}
+                  </p>
                 </CardFooter>
               </Card>
-            ))}
-          </div>
+            )
+          })}
         </div>
-      )}
-
-      {error && (
-        <Alert variant="destructive" className="mt-12 max-w-2xl mx-auto">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      {recommendations && <BookRecommendations recommendations={recommendations} />}
+      </div>
     </div>
   )
 }
