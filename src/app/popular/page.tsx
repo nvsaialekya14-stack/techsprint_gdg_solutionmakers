@@ -1,4 +1,3 @@
-
 'use client'
 
 import Image from 'next/image'
@@ -32,7 +31,7 @@ const popularBooks = [
     badgeText: 'Popular',
     badgeVariant: 'default',
   },
-]
+] as const
 
 const limitedEditions = [
   {
@@ -45,13 +44,13 @@ const limitedEditions = [
   },
   {
     bookId: 'lim2',
-    title: 'Dune: Collector\'s Edition',
+    title: "Dune: Collector's Edition",
     author: 'Frank Herbert',
-    reason: 'Features a unique foil cover and author\'s notes.',
+    reason: "Features a unique foil cover and author's notes.",
     badgeText: 'Limited',
     badgeVariant: 'destructive',
   },
-]
+] as const
 
 export default function PopularPage() {
   return (
@@ -61,21 +60,41 @@ export default function PopularPage() {
           <Balancer>Popular & Limited Editions</Balancer>
         </h1>
         <p className="mt-4 text-lg text-muted-foreground">
-          <Balancer>Discover what's trending and grab exclusive limited-run books before they're gone.</Balancer>
+          <Balancer>
+            Discover what's trending and grab exclusive limited-run books before they're gone.
+          </Balancer>
         </p>
       </section>
 
+      {/* Popular Books */}
       <div>
-        <h2 className="font-headline text-3xl font-bold mb-6 text-center">Popular Books</h2>
+        <h2 className="font-headline text-3xl font-bold mb-6 text-center">
+          Popular Books
+        </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {popularBooks.map((book, index) => {
-            const placeholder = PlaceHolderImages[index % PlaceHolderImages.length]
+            const placeholder =
+              PlaceHolderImages[index % PlaceHolderImages.length]
+
             return (
-              <Card key={book.bookId} className="flex flex-col hover:shadow-xl transition-shadow">
+              <Card
+                key={book.bookId}
+                className="flex flex-col hover:shadow-xl transition-shadow"
+              >
                 <CardHeader className="p-0 relative">
-                  <Badge className="absolute top-2 right-2 z-10" variant={book.badgeVariant}>{book.badgeText}</Badge>
-                   <Image
-                    src={placeholder?.imageUrl ?? `https://picsum.photos/seed/${book.bookId}/400/300`}
+                  <Badge
+                    className="absolute top-2 right-2 z-10"
+                    variant={book.badgeVariant}
+                  >
+                    {book.badgeText}
+                  </Badge>
+
+                  <Image
+                    src={
+                      placeholder?.imageUrl ??
+                      `https://picsum.photos/seed/${book.bookId}/400/300`
+                    }
                     alt={book.title}
                     width={400}
                     height={300}
@@ -83,12 +102,20 @@ export default function PopularPage() {
                     data-ai-hint={placeholder?.imageHint ?? 'book cover'}
                   />
                 </CardHeader>
+
                 <CardContent className="flex-grow p-4">
-                  <CardTitle as="h3" className="font-headline text-lg mb-1">{book.title}</CardTitle>
-                  <p className="text-sm text-muted-foreground mb-2">{book.author}</p>
+                  <CardTitle as="h3" className="font-headline text-lg mb-1">
+                    {book.title}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground mb-2">
+                    {book.author}
+                  </p>
                 </CardContent>
+
                 <CardFooter className="p-4 pt-0">
-                  <p className="text-xs text-primary font-semibold">{book.reason}</p>
+                  <p className="text-xs text-primary font-semibold">
+                    {book.reason}
+                  </p>
                 </CardFooter>
               </Card>
             )
@@ -96,35 +123,58 @@ export default function PopularPage() {
         </div>
       </div>
 
-       <div>
-        <h2 className="font-headline text-3xl font-bold mb-6 text-center">Limited Editions</h2>
+      {/* Limited Editions */}
+      <div>
+        <h2 className="font-headline text-3xl font-bold mb-6 text-center">
+          Limited Editions
+        </h2>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {limitedEditions.map((book, index) => {
-             const placeholder = PlaceHolderImages[(index + popularBooks.length) % PlaceHolderImages.length]
+            const placeholder =
+              PlaceHolderImages[
+                (index + popularBooks.length) % PlaceHolderImages.length
+              ]
+
             return (
-              <Card key={book.bookId} className="flex flex-col md:flex-row items-center hover:shadow-xl transition-shadow overflow-hidden">
+              <Card
+                key={book.bookId}
+                className="flex flex-col md:flex-row items-center hover:shadow-xl transition-shadow overflow-hidden"
+              >
                 <div className="w-full md:w-1/3">
-                   <Image
-                      src={placeholder?.imageUrl ?? `https://picsum.photos/seed/${book.bookId}/300/400`}
-                      alt={book.title}
-                      width={300}
-                      height={400}
-                      className="object-cover w-full h-48 md:h-full"
-                      data-ai-hint={placeholder?.imageHint ?? 'book cover'}
-                    />
+                  <Image
+                    src={
+                      placeholder?.imageUrl ??
+                      `https://picsum.photos/seed/${book.bookId}/300/400`
+                    }
+                    alt={book.title}
+                    width={300}
+                    height={400}
+                    className="object-cover w-full h-48 md:h-full"
+                    data-ai-hint={placeholder?.imageHint ?? 'book cover'}
+                  />
                 </div>
+
                 <div className="w-full md:w-2/3 flex flex-col p-6">
-                    <Badge className="w-fit mb-2" variant={book.badgeVariant}>{book.badgeText}</Badge>
-                    <CardTitle as="h3" className="font-headline text-xl mb-1">{book.title}</CardTitle>
-                    <p className="text-sm text-muted-foreground mb-4">{book.author}</p>
-                    <p className="text-sm">{book.reason}</p>
+                  <Badge className="w-fit mb-2" variant={book.badgeVariant}>
+                    {book.badgeText}
+                  </Badge>
+
+                  <CardTitle as="h3" className="font-headline text-xl mb-1">
+                    {book.title}
+                  </CardTitle>
+
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {book.author}
+                  </p>
+
+                  <p className="text-sm">{book.reason}</p>
                 </div>
               </Card>
             )
           })}
         </div>
       </div>
-
     </div>
   )
 }
