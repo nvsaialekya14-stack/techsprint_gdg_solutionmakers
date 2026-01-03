@@ -1,5 +1,4 @@
 import { ImageResponse } from 'next/og'
-import { Book } from 'lucide-react'
 
 export const dynamic = 'force-static'
 export const size = { width: 32, height: 32 }
