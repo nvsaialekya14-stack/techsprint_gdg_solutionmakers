@@ -1,4 +1,4 @@
-
+'use server';
 /**
  * @fileOverview Provides book recommendations based on syllabus image content.
  *
